@@ -204,9 +204,6 @@ window.addEventListener("scroll", () => {
       textSection.classList.add('inactive');
     }
   });
-
-  // Debug logging - remove after testing
-  // console.log('Progress:', progress.toFixed(2), 'Active Section:', activeSection, 'Total:', total);
 });
 
 
@@ -232,7 +229,7 @@ function filterProjects(category) {
   
   // Update active tab
   tabs.forEach(tab => tab.classList.remove('active'));
-  event.target.classList.add('active');
+  event.currentTarget.classList.add('active');
   
   // Filter cards
   cards.forEach(card => {
@@ -506,3 +503,41 @@ function testCardStack() {
 
 // Run test after page loads - remove after confirming it works
 setTimeout(testCardStack, 1000);
+
+
+// START: HAMBURGER MENU SCRIPT
+document.addEventListener('DOMContentLoaded', () => {
+    const hamburger = document.querySelector('.hamburger');
+    const mobileNav = document.querySelector('.mobile-nav');
+    const closeBtn = document.querySelector('.mobile-nav-close');
+
+    if (hamburger && mobileNav && closeBtn) {
+        // Create overlay element
+        const overlay = document.createElement('div');
+        overlay.classList.add('overlay');
+        document.body.appendChild(overlay);
+
+        const openMenu = () => {
+            mobileNav.style.right = '0';
+            overlay.classList.add('show');
+            document.body.classList.add('no-scroll');
+        };
+
+        const closeMenu = () => {
+            mobileNav.style.right = '-100%';
+            overlay.classList.remove('show');
+            document.body.classList.remove('no-scroll');
+        };
+
+        hamburger.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        overlay.addEventListener('click', closeMenu);
+        
+        // Close menu if a link is clicked
+        const navLinks = mobileNav.querySelectorAll('a, button');
+        navLinks.forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+    }
+});
+// END: HAMBURGER MENU SCRIPT
