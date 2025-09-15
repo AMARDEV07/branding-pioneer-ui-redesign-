@@ -157,6 +157,7 @@ body {
 }
 .element-four {
   animation-duration: 2s;
+  animation-name: down;
   animation-delay: 0.5s;
   animation-iteration-count: 1;
   animation-timing-function: cubic-bezier(0, 0.66, 0.35, 1);
@@ -1058,7 +1059,6 @@ span {
   overflow: hidden;
   transform-origin: top;
   transition: all 0.3s ease-out;
-  backdrop-filter: blur(10px);
   border: 1px solid rgba(82, 78, 78, 0.795);
 }
 
@@ -2352,6 +2352,9 @@ h1, h2, h3 {
   .card-element {
     width: 90%;
     max-width: 450px;
+    /* Light blur added for mobile only */
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
   }
   .text-area {
     padding: 1.5rem;
