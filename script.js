@@ -128,24 +128,11 @@ function page2Animation(){
       }, "line-start+=1");
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-// cards animation - COMPLETELY UPDATED VERSION
+// cards animation
 const cards = document.querySelectorAll(".card-element");
 const textSections = document.querySelectorAll(".text-area");
 const total = cards.length;
 
-// ADDED: Initially show first text section, hide others
 textSections.forEach((section, index) => {
   if (index === 0) {
     section.classList.remove('inactive');
@@ -158,45 +145,36 @@ window.addEventListener("scroll", () => {
   const main = document.querySelector(".sticky-card-stack-container");
   if (!main) return;
 
-  // Get container position relative to viewport
   const rect = main.getBoundingClientRect();
   const containerTop = rect.top;
   const containerHeight = rect.height;
   const windowHeight = window.innerHeight;
   
-  // Only animate when container is in view
   if (containerTop > windowHeight || containerTop + containerHeight < 0) {
     return;
   }
 
-  // Calculate progress based on how much of container has scrolled past
   let progress = 0;
   if (containerTop <= 0) {
     progress = Math.min(Math.abs(containerTop) / (containerHeight - windowHeight), 1);
   }
 
-  // Animate cards
   cards.forEach((card, i) => {
     const scale = Math.max(0.8, 1 - (total - i - 1) * 0.05 + progress * 0.3);
     const translateY = i * 30 - progress * i * 20;
     card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
-    
-    // Set z-index to ensure proper stacking
     card.style.zIndex = total - i;
   });
 
-  // FIXED: Better calculation for active section with proper last card handling
   const sectionProgress = progress * total;
   let activeSection;
   
   if (progress >= 0.95) {
-    // Near the end, show the last section
     activeSection = total - 1;
   } else {
     activeSection = Math.min(Math.floor(sectionProgress), total - 1);
   }
   
-  // FIXED: Show/hide text sections with proper class management
   textSections.forEach((textSection, i) => {
     if (i === activeSection) {
       textSection.classList.remove('inactive');
@@ -206,32 +184,18 @@ window.addEventListener("scroll", () => {
   });
 });
 
-
-
-
-
-
-
-
-
 // Run animations
 page1Animation();
 page2Animation();
-
-
-
-
 
 // portfolio filter
 function filterProjects(category) {
   const cards = document.querySelectorAll('.portfolio-card');
   const tabs = document.querySelectorAll('.filter-tab');
   
-  // Update active tab
   tabs.forEach(tab => tab.classList.remove('active'));
   event.currentTarget.classList.add('active');
   
-  // Filter cards
   cards.forEach(card => {
       if (category === 'all' || card.dataset.category === category) {
           card.style.display = 'block';
@@ -242,8 +206,6 @@ function filterProjects(category) {
   });
 }
 
-
-// Add hover effects and animations
 document.addEventListener('DOMContentLoaded', function() {
   const cards = document.querySelectorAll('.portfolio-card');
   
@@ -266,13 +228,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const mainContent = document.getElementById('mainContent');
   const progressBars = document.querySelectorAll('.progress-fill');
 
-  // Check if elements exist before using them
   if (loadingOverlay) {
-    // Simulate loading time
     setTimeout(() => {
         loadingOverlay.classList.add('hidden');
         
-        // Animate progress bars after loading
         setTimeout(() => {
             progressBars.forEach(bar => {
                 const width = bar.getAttribute('data-width');
@@ -284,22 +243,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 3000);
   }
 
-  // Tab switching functionality with progress bar animation
+  // Tab switching functionality
   const tabs = document.querySelectorAll('.tab');
   tabs.forEach(tab => {
       tab.addEventListener('click', function() {
-          // Remove active class from all tabs
           tabs.forEach(t => t.classList.remove('active'));
-          // Add active class to clicked tab
           this.classList.add('active');
           
-          // Reset progress bars to 0 first
           progressBars.forEach(bar => {
               bar.style.width = '0%';
               bar.style.transition = 'none';
           });
           
-          // Animate progress bars after tab switch
           setTimeout(() => {
               progressBars.forEach(bar => {
                   bar.style.transition = 'width 2s ease';
@@ -310,19 +265,16 @@ document.addEventListener('DOMContentLoaded', function() {
               });
           }, 100);
           
-          // Update content based on selected tab
           updateTabContent(this.getAttribute('data-tab'));
       });
   });
 
-  // Function to update tab content
   function updateTabContent(tabName) {
       const caseHeader = document.querySelector('.case-header');
       const sections = document.querySelectorAll('.section p');
       
       if (!caseHeader) return;
       
-      // Tab-specific content
       const tabData = {
           'aiims': {
               logo: 'https://brandingpioneers.com/assets/aiims.webp',
@@ -360,7 +312,6 @@ document.addEventListener('DOMContentLoaded', function() {
       
       const data = tabData[tabName];
       if (data) {
-          // Update logo and title
           caseHeader.innerHTML = `
               <div class="logo">
                   <img src="${data.logo}" alt="${data.title} Logo">
@@ -371,7 +322,6 @@ document.addEventListener('DOMContentLoaded', function() {
               </div>
           `;
           
-          // Update sections with unique animation classes
           const challengeSolution = document.querySelector('.challenge-solution');
           if (challengeSolution) {
             challengeSolution.innerHTML = `
@@ -392,7 +342,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
   }
 
-  // CTA button interaction
   const ctaButton = document.querySelector('.cta-button');
   if (ctaButton) {
     ctaButton.addEventListener('click', function() {
@@ -405,7 +354,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Add hover effects to metrics
   const metrics = document.querySelectorAll('.metric');
   metrics.forEach(metric => {
       metric.addEventListener('mouseenter', function() {
@@ -421,123 +369,26 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// Add shimmer CSS for progress bar
-const style = document.createElement('style');
-style.textContent = `
-    .progress-fill::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 20px;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3));
-        animation: shimmer 2s infinite;
-        opacity: 0;
-    }
-    
-    .progress-fill.animating::after {
-        opacity: 1;
-    }
-    
-    @keyframes shimmer {
-        0% { transform: translateX(-100%); }
-        100% { transform: translateX(100%); }
-    }
-`;
-document.head.appendChild(style);
-
-
-
-
-
-function reloadWithLoading() {
-  const loadingOverlay = document.getElementById('loadingOverlay');
-  const progressBars = document.querySelectorAll('.progress-fill');
-  
-  if (!loadingOverlay) return;
-  
-  // Reset progress bars
-  progressBars.forEach(bar => {
-      bar.style.width = '0%';
-  });
-  
-  // Show loading overlay
-  loadingOverlay.classList.remove('hidden');
-  
-  // Simulate loading again
-  setTimeout(() => {
-      loadingOverlay.classList.add('hidden');
-      setTimeout(() => {
-          progressBars.forEach(bar => {
-              const width = bar.getAttribute('data-width');
-              if (width) {
-                bar.style.width = width;
-              }
-          });
-      }, 500);
-  }, 3000);
-}
-
-// Keyboard shortcut for reload
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'l' || e.key === 'L') {
-      reloadWithLoading();
-  }
-});
-
-// ADDED: Test function to verify card stack is working
-function testCardStack() {
-  const cards = document.querySelectorAll('.card-element');
-  const textAreas = document.querySelectorAll('.text-area');
-  
-  console.log('Card Stack Test:');
-  console.log('Total cards found:', cards.length);
-  console.log('Total text areas found:', textAreas.length);
-  
-  textAreas.forEach((area, index) => {
-    const isActive = !area.classList.contains('inactive');
-    console.log(`Text area ${index}:`, isActive ? 'VISIBLE' : 'HIDDEN');
-  });
-}
-
-// Run test after page loads - remove after confirming it works
-setTimeout(testCardStack, 1000);
-
-
-// START: HAMBURGER MENU SCRIPT
+// START: DROPDOWN MENU SCRIPT (Replaces old hamburger script)
 document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.querySelector('.hamburger');
     const mobileNav = document.querySelector('.mobile-nav');
-    const closeBtn = document.querySelector('.mobile-nav-close');
 
-    if (hamburger && mobileNav && closeBtn) {
-        // Create overlay element
-        const overlay = document.createElement('div');
-        overlay.classList.add('overlay');
-        document.body.appendChild(overlay);
+    if (hamburger && mobileNav) {
+        hamburger.addEventListener('click', () => {
+            // Toggle the 'is-open' class on the nav panel
+            mobileNav.classList.toggle('is-open');
 
-        const openMenu = () => {
-            mobileNav.style.right = '0';
-            overlay.classList.add('show');
-            document.body.classList.add('no-scroll');
-        };
-
-        const closeMenu = () => {
-            mobileNav.style.right = '-100%';
-            overlay.classList.remove('show');
-            document.body.classList.remove('no-scroll');
-        };
-
-        hamburger.addEventListener('click', openMenu);
-        closeBtn.addEventListener('click', closeMenu);
-        overlay.addEventListener('click', closeMenu);
-        
-        // Close menu if a link is clicked
-        const navLinks = mobileNav.querySelectorAll('a, button');
-        navLinks.forEach(link => {
-            link.addEventListener('click', closeMenu);
+            // Toggle the icon between menu and close
+            const icon = hamburger.querySelector('i');
+            if (mobileNav.classList.contains('is-open')) {
+                icon.classList.remove('ri-menu-line');
+                icon.classList.add('ri-close-line');
+            } else {
+                icon.classList.remove('ri-close-line');
+                icon.classList.add('ri-menu-line');
+            }
         });
     }
 });
-// END: HAMBURGER MENU SCRIPT
+// END: DROPDOWN MENU SCRIPT
