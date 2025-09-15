@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
 function page1Animation() {
   let tl = gsap.timeline();
 
-  // Header/Navigation animation
   tl.from(".contracted, .manage", {
     y: -30,
     opacity: 0,
@@ -48,7 +47,6 @@ function page1Animation() {
     stagger: 0.15,
   });
 
-  // Main content (page 1) animation
   tl.from(
     ".title",
     {
@@ -64,7 +62,6 @@ function page1Animation() {
     duration: 0.5,
   }, "-=0.2");
 
-  // Bottom elements (rectangles and circles) animation
   tl.from(".section-collection > div, .right", {
     opacity: 0,
     y: 30,
@@ -90,42 +87,12 @@ function page2Animation(){
         duration:0.5
       });
 
-      // Animation for all 6 elements in pairs
-      tl2.from(".elem.line1.elem-left", {
-          x:-300,
-          opacity: 0,
-          duration: 1,
-      }, "line-start");
-
-      tl2.from(".elem.line1.elem-right", {
-          x:300,
-          opacity: 0,
-          duration: 1,
-      }, "line-start");
-
-      tl2.from(".elem.line2.elem-left", {
-          x:-300,
-          opacity: 0,
-          duration: 1,
-      }, "line-start+=0.5");
-
-      tl2.from(".elem.line2.elem-right", {
-          x:300,
-          opacity: 0,
-          duration: 1,
-      }, "line-start+=0.5");
-
-      tl2.from(".elem.line3.elem-left", {
-          x:-300,
-          opacity: 0,
-          duration: 1,
-      }, "line-start+=1");
-
-      tl2.from(".elem.line3.elem-right", {
-          x:300,
-          opacity: 0,
-          duration: 1,
-      }, "line-start+=1");
+      tl2.from(".elem.line1.elem-left", { x:-300, opacity: 0, duration: 1 }, "line-start");
+      tl2.from(".elem.line1.elem-right", { x:300, opacity: 0, duration: 1 }, "line-start");
+      tl2.from(".elem.line2.elem-left", { x:-300, opacity: 0, duration: 1 }, "line-start+=0.5");
+      tl2.from(".elem.line2.elem-right", { x:300, opacity: 0, duration: 1 }, "line-start+=0.5");
+      tl2.from(".elem.line3.elem-left", { x:-300, opacity: 0, duration: 1 }, "line-start+=1");
+      tl2.from(".elem.line3.elem-right", { x:300, opacity: 0, duration: 1 }, "line-start+=1");
 }
 
 // cards animation
@@ -159,9 +126,21 @@ window.addEventListener("scroll", () => {
     progress = Math.min(Math.abs(containerTop) / (containerHeight - windowHeight), 1);
   }
 
+  const isMobile = window.innerWidth <= 768;
+
   cards.forEach((card, i) => {
-    const scale = Math.max(0.8, 1 - (total - i - 1) * 0.05 + progress * 0.3);
+    let scale;
     const translateY = i * 30 - progress * i * 20;
+
+    // MOBILE CHANGE: Cards after the 3rd will now mimic the 3rd card's scale
+    if (isMobile && i > 2) {
+      const thirdCardIndex = 2; // Index of the 3rd card
+      scale = Math.max(0.8, 1 - (total - thirdCardIndex - 1) * 0.05 + progress * 0.3);
+    } else {
+      // Original logic for desktop/tablet and first 3 cards on mobile
+      scale = Math.max(0.8, 1 - (total - i - 1) * 0.05 + progress * 0.3);
+    }
+    
     card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
     card.style.zIndex = total - i;
   });
@@ -186,7 +165,13 @@ window.addEventListener("scroll", () => {
 
 // Run animations
 page1Animation();
-page2Animation();
+
+// Use GSAP's matchMedia to conditionally run animations
+gsap.matchMedia().add("(min-width: 769px)", () => {
+  // This code only runs on screens wider than 768px
+  page2Animation();
+});
+
 
 // portfolio filter
 function filterProjects(category) {
@@ -369,17 +354,15 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// START: DROPDOWN MENU SCRIPT (Replaces old hamburger script)
+// START: DROPDOWN MENU SCRIPT
 document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.querySelector('.hamburger');
     const mobileNav = document.querySelector('.mobile-nav');
 
     if (hamburger && mobileNav) {
         hamburger.addEventListener('click', () => {
-            // Toggle the 'is-open' class on the nav panel
             mobileNav.classList.toggle('is-open');
 
-            // Toggle the icon between menu and close
             const icon = hamburger.querySelector('i');
             if (mobileNav.classList.contains('is-open')) {
                 icon.classList.remove('ri-menu-line');

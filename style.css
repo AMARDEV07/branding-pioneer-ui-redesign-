@@ -157,7 +157,6 @@ body {
 }
 .element-four {
   animation-duration: 2s;
-  animation-name: down;
   animation-delay: 0.5s;
   animation-iteration-count: 1;
   animation-timing-function: cubic-bezier(0, 0.66, 0.35, 1);
@@ -2310,6 +2309,9 @@ h1, h2, h3 {
 
 /* Mobile view */
 @media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
   .counter-container2 {
     flex-direction: column;
   }
