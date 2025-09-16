@@ -1047,6 +1047,7 @@ span {
   justify-content: center;
   height: 100vh;
   width: 100%;
+ 
 }
 
 .card-element {
@@ -1059,6 +1060,7 @@ span {
   overflow: hidden;
   transform-origin: top;
   transition: all 0.3s ease-out;
+  background-color: white;
   border: 1px solid rgba(82, 78, 78, 0.795);
 }
 
@@ -2353,8 +2355,8 @@ h1, h2, h3 {
     width: 90%;
     max-width: 450px;
     /* Light blur added for mobile only */
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
+    /* -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px); */
   }
   .text-area {
     padding: 1.5rem;
@@ -2430,6 +2432,10 @@ h1, h2, h3 {
     line-height: 1.2;
     width: 95%;
   }
+ .hamburger {
+      padding-inline-end: 0rem;
+
+ }
   .graph {
     font-size: 0.9rem;
     width: 90%;
@@ -2489,5 +2495,29 @@ h1, h2, h3 {
   }
   .footer-bottom a {
       margin-left: 0; 
+  }
+  .social-icon{
+    /* padding-left: 3rem; */
+    margin:0 auto;
+  }
+  .offer-box{
+    flex: 1 1 0px;
+  }
+  .elem-part1 {
+    gap: 1rem;
+  }
+  .elem-part1 h2{
+    font-size: 1.7rem;
+  }
+  .warp-one{
+    background-position-x: 0px;
+  }
+   .warp-two{
+    background-position-x: -125px;
+    background-position-y: 13px;
+  }
+  .plus{
+    
+    right: 13%;
   }
 }
